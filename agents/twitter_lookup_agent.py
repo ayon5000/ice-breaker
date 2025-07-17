@@ -26,8 +26,8 @@ def lookup(name: str) -> str:
     llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0)
 
     template = """
-    Given the full name {name_of_person}, I want you to get me a link to their LinkedIn profile page.
-    Your answer should contain a single URL only.
+    Given the full name {name_of_person}, I want you to find a link to their Twitter profile page, and extract from it their username.
+    In Your Final answer only the person's username.
     """
 
     prompt_template = PromptTemplate(
@@ -36,9 +36,9 @@ def lookup(name: str) -> str:
 
     tools_for_agent = [
         Tool(
-            name="Crawl Google 4 LinkedIn profile page",
+            name="Crawl Google 4 Twitter profile page",
             func=get_profile_url_tavily,
-            description="useful for when you need to get the LinkedIn page URL",
+            description="useful for when you need to get the Twitter page URL",
         )
     ]
 
@@ -51,11 +51,11 @@ def lookup(name: str) -> str:
         input={"input": prompt_template.format_prompt(name_of_person=name)}
     )
 
-    linkedin_profile_url = result["output"]
+    twitter_username = result["output"]
 
-    return linkedin_profile_url
+    return twitter_username
 
 
 if __name__ == "__main__":
-    linkedin_url = lookup(name="Eden Marco Udemy")
-    print(linkedin_url)
+    twitter_username = lookup(name="Eden Marco Udemy")
+    print(twitter_username)
